@@ -7,6 +7,7 @@ No gameplay logic is implemented yet.
 
 from countries import get_country_names, get_country_stats, increase_stat, apply_stat_delta
 from events import get_random_event
+from calculations import get_power_rankings
 
 START_YEAR = 2025
 END_YEAR = 2045
@@ -62,11 +63,12 @@ def show_menu(year):
     print("4. Increase Stability")
     print("5. Research Technology")
     print("6. Advance Year")
-    print("7. Quit")
+    print("7. World Rankings")
+    print("8. Quit")
 
 
 def get_menu_choice():
-    return input("Enter your choice (1-7): ").strip()
+    return input("Enter your choice (1-8): ").strip()
 
 
 STAT_ACTIONS = {
@@ -100,6 +102,20 @@ def advance_year(country, year):
     return year
 
 
+def show_world_rankings(country):
+    rankings = get_power_rankings()
+
+    print("\n--- World Power Rankings ---")
+    player_rank = None
+    for rank, (name, power) in enumerate(rankings, start=1):
+        marker = "  <-- YOU" if name == country else ""
+        print(f"  {rank}. {name} - Power: {power}{marker}")
+        if name == country:
+            player_rank = rank
+
+    print(f"\nYour ranking: {player_rank} of {len(rankings)}")
+
+
 def run_game_loop(country):
     year = START_YEAR
     playing = True
@@ -118,10 +134,12 @@ def run_game_loop(country):
                 print(f"\nYear {END_YEAR} reached. The simulation has ended.")
                 playing = False
         elif choice == "7":
+            show_world_rankings(country)
+        elif choice == "8":
             print("\nThanks for playing GeoRisk Simulator. Goodbye!")
             playing = False
         else:
-            print("Invalid choice. Please enter a number from 1 to 7.")
+            print("Invalid choice. Please enter a number from 1 to 8.")
 
 
 def main():
