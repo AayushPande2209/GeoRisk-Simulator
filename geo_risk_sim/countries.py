@@ -55,3 +55,8 @@ def get_country_names():
 
 def get_country_stats(name):
     return COUNTRIES[name]
+
+
+def increase_stat(name, stat, amount=5):
+    stats = COUNTRIES[name]
+    stats[stat] = min(100, stats[stat] + amount)
