@@ -5,9 +5,14 @@ main menu loop: viewing stats, improving them, advancing the year with
 random events, and checking world rankings.
 """
 
-from countries import get_country_names, get_country_stats, increase_stat, apply_stat_delta
+from countries import (
+    apply_stat_delta,
+    get_country_names,
+    get_country_stats,
+    increase_stat,
+)
 from events import get_random_event
-from calculations import get_power_rankings, calculate_risk
+from calculations import calculate_risk, get_power_rankings
 
 START_YEAR = 2025
 END_YEAR = 2045
@@ -26,6 +31,7 @@ TITLE_ART = r"""
 
 
 def show_title_screen():
+    """Print the ASCII art title screen."""
     print(TITLE_ART)
 
 
@@ -48,10 +54,12 @@ def prompt_choice(prompt_text, valid_choices):
         if choice in valid_choices:
             return choice
 
-        print(f"Invalid input. Please enter one of: {', '.join(sorted(valid_choices))}")
+        options = ", ".join(sorted(valid_choices))
+        print(f"Invalid input. Please enter one of: {options}")
 
 
 def choose_country():
+    """Display country options and return the player's chosen country name."""
     names = get_country_names()
 
     print_header("CHOOSE YOUR COUNTRY")
@@ -65,6 +73,7 @@ def choose_country():
 
 
 def print_country_stats(name):
+    """Print a country's stats, including Risk Score, in a formatted report."""
     stats = get_country_stats(name)
     risk = calculate_risk(name)
 
@@ -80,6 +89,7 @@ def print_country_stats(name):
 
 
 def show_menu(year):
+    """Print the main menu with the current year as a header."""
     print_header(f"YEAR {year}")
     print("  1. View Country")
     print("  2. Improve Economy")
@@ -96,6 +106,7 @@ MENU_CHOICES = {"1", "2", "3", "4", "5", "6", "7", "8"}
 
 
 def get_menu_choice():
+    """Prompt for and return a validated main menu choice."""
     return prompt_choice("Enter your choice (1-8): ", MENU_CHOICES)
 
 
@@ -108,12 +119,14 @@ STAT_ACTIONS = {
 
 
 def apply_stat_action(country, choice):
+    """Increase the stat mapped to the given menu choice by 5 points."""
     stat_key, stat_label = STAT_ACTIONS[choice]
     increase_stat(country, stat_key, 5)
     print(f"  {stat_label} increased by 5.")
 
 
 def apply_event(country):
+    """Apply a random event's effects to country and print the result."""
     event = get_random_event()
 
     print(f"  Event: {event['name']}")
@@ -125,6 +138,7 @@ def apply_event(country):
 
 
 def advance_year(country, year):
+    """Advance the year by one, trigger a random event, and return it."""
     year += 1
     print_header(f"ADVANCING TO YEAR {year}")
     apply_event(country)
@@ -132,6 +146,7 @@ def advance_year(country, year):
 
 
 def show_world_rankings(country):
+    """Print every country ranked by Power Score and the player's rank."""
     rankings = get_power_rankings()
 
     print_header("WORLD POWER RANKINGS")
@@ -147,6 +162,7 @@ def show_world_rankings(country):
 
 
 def run_game_loop(country):
+    """Run the main menu loop until the player quits or the simulation ends."""
     year = START_YEAR
     playing = True
 
@@ -167,7 +183,7 @@ def run_game_loop(country):
                 playing = False
         elif choice == "7":
             show_world_rankings(country)
-        else:  # choice == "8"
+        elif choice == "8":
             print("\nThanks for playing GeoRisk Simulator. Goodbye!")
             playing = False
 

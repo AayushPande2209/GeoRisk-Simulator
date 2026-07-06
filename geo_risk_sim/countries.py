@@ -50,14 +50,17 @@ COUNTRIES = {
 
 
 def get_country_names():
+    """Return a list of all playable country names."""
     return list(COUNTRIES.keys())
 
 
 def get_country_stats(name):
+    """Return the statistics dictionary for the given country name."""
     return COUNTRIES[name]
 
 
 def increase_stat(name, stat, amount=5):
+    """Increase a country's stat by amount, capped at 100."""
     stats = COUNTRIES[name]
     stats[stat] = min(100, stats[stat] + amount)
 
