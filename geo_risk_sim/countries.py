@@ -60,3 +60,16 @@ def get_country_stats(name):
 def increase_stat(name, stat, amount=5):
     stats = COUNTRIES[name]
     stats[stat] = min(100, stats[stat] + amount)
+
+
+def apply_stat_delta(name, stat, delta):
+    stats = COUNTRIES[name]
+    before = stats[stat]
+
+    if stat == "population":
+        after = max(0, before + delta)
+    else:
+        after = max(0, min(100, before + delta))
+
+    stats[stat] = after
+    return after - before

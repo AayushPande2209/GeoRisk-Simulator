@@ -5,7 +5,11 @@ lets the player pick a country, prints that country's stats, and exits.
 No gameplay logic is implemented yet.
 """
 
-from countries import get_country_names, get_country_stats, increase_stat
+from countries import get_country_names, get_country_stats, increase_stat, apply_stat_delta
+from events import get_random_event
+
+START_YEAR = 2025
+END_YEAR = 2045
 
 TITLE_ART = r"""
   ____                _____  _     _      _____ _
@@ -79,8 +83,25 @@ def apply_stat_action(country, choice):
     print(f"{stat_label} increased by 5.")
 
 
+def apply_event(country):
+    event = get_random_event()
+
+    print(f"\nEvent: {event['name']}")
+    for stat, delta in event["effects"].items():
+        actual_change = apply_stat_delta(country, stat, delta)
+        sign = "+" if actual_change >= 0 else ""
+        print(f"  {stat.capitalize()}: {sign}{actual_change}")
+
+
+def advance_year(country, year):
+    year += 1
+    print(f"\n--- Advancing to {year} ---")
+    apply_event(country)
+    return year
+
+
 def run_game_loop(country):
-    year = 2025
+    year = START_YEAR
     playing = True
 
     while playing:
@@ -92,7 +113,10 @@ def run_game_loop(country):
         elif choice in STAT_ACTIONS:
             apply_stat_action(country, choice)
         elif choice == "6":
-            print("Feature coming soon.")
+            year = advance_year(country, year)
+            if year >= END_YEAR:
+                print(f"\nYear {END_YEAR} reached. The simulation has ended.")
+                playing = False
         elif choice == "7":
             print("\nThanks for playing GeoRisk Simulator. Goodbye!")
             playing = False
