@@ -50,10 +50,8 @@ COUNTRIES = {
 
 
 def get_country_names():
-    """Return a list of all available country names."""
     return list(COUNTRIES.keys())
 
 
 def get_country_stats(name):
-    """Return the statistics dictionary for the given country name."""
     return COUNTRIES[name]

@@ -50,11 +50,44 @@ def print_country_stats(name):
     print(f"Population: {stats['population']} million")
 
 
+def show_menu(year):
+    print(f"\nYear: {year}")
+    print("1. View Country")
+    print("2. Improve Economy")
+    print("3. Build Military")
+    print("4. Increase Stability")
+    print("5. Research Technology")
+    print("6. Advance Year")
+    print("7. Quit")
+
+
+def get_menu_choice():
+    return input("Enter your choice (1-7): ").strip()
+
+
+def run_game_loop(country):
+    year = 2025
+    playing = True
+
+    while playing:
+        show_menu(year)
+        choice = get_menu_choice()
+
+        if choice == "1":
+            print_country_stats(country)
+        elif choice in ("2", "3", "4", "5", "6"):
+            print("Feature coming soon.")
+        elif choice == "7":
+            print("\nThanks for playing GeoRisk Simulator. Goodbye!")
+            playing = False
+        else:
+            print("Invalid choice. Please enter a number from 1 to 7.")
+
+
 def main():
     show_title_screen()
     chosen_country = choose_country()
-    print_country_stats(chosen_country)
-    print("\nThanks for playing GeoRisk Simulator. Goodbye!")
+    run_game_loop(chosen_country)
 
 
 if __name__ == "__main__":
